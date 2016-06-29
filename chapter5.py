@@ -191,11 +191,61 @@ frame - series2
 series3 = frame['d']
 frame.sub(series3, axis=0)
 
-                
+"""
+Function application and mapping
+"""
+frame = DataFrame(np.random.randn(4, 3), columns=list('bde'),
+                   index=['Utah', 'Ohio', 'Texas', 'Oregon'])
+np.abs(frame)
+f = lambda x: x.max()-x.min() 
+frame.apply(f)     
+frame.max() - frame.min()
+frame.apply(f, axis=1)             
+frame.max(axis=1) - frame.min(axis=1)
+def f(x):
+    return Series([x.min(), x.max()], index=['min', 'max'])
+frame.apply(f)               
+f = lambda x: '%.2f' % x
+frame.applymap(f)
+frame['e'].map(f)
 
+"""
+Sorting and ranking
+"""
+obj = Series(range(4), index=['d', 'a', 'b', 'c'])
+obj.sort_index()
+frame = DataFrame(np.arange(8).reshape((2, 4)), index=['three', 'one'],
+                  columns=['d', 'a', 'b', 'c'])
+frame.sort_index()
+frame.sort_index(axis=1)
+frame.sort_index(axis=1, ascending=False)    
+obj = Series([4, 7, -3, 2])
+obj.order()   
+obj = Series([4, np.nan, 7, np.nan, -3, 2])
+obj.order()
+frame = DataFrame({'b':[4, 7, -3, 2], 'a': [0, 1, 0, 1]})
+frame.sort_index(by='b')
+frame.sort_index(by=['a', 'b'])
+obj = Series([7, -5, 7, 4, 2, 0, 4])
+obj.rank()
+obj.rank(method = 'first')      
+obj.rank(ascending=False, method='first')     
+obj.rank(ascending=False, method='max')
+frame = DataFrame({'b': [4.3, 7, -3, 2],
+                   'a': [0, 1, 0, 1],
+                   'c': [-2, 5, 8, -2.5]})
+frame.rank()                   
+frame.rank(axis=1)                 
 
-                 
-         
+"""
+Axis indexes with duplicate values
+"""
+obj = Series(range(5), index=['a', 'a', 'b', 'b', 'c'])
+obj.index.is_unique         
+obj['a']
+obj['c']
+df = DataFrame(np.random.randn(4, 3), index=['a', 'a', 'b', 'b'])
+df.ix['a']
 
                  
 
