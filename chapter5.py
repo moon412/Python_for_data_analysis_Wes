@@ -189,6 +189,7 @@ series2 = Series(range(3), index=['b', 'e', 'f'])
 frame + series2
 frame - series2
 series3 = frame['d']
+frame.sub(series3, axis=0)
 
                 
 
