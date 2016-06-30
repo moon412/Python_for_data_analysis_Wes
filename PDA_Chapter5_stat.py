@@ -11,6 +11,9 @@ The second half: Statistics
 """
 Summarizing and Computing Descriptive Statistics
 """
+from pandas import Series, DataFrame
+import pandas as pd
+import numpy as np
 df = DataFrame([[1.4, np.nan],
                 [7.1, -4.5],
                 [np.nan, np.nan],
@@ -60,3 +63,22 @@ pd.value_counts(obj.values)
 pd.value_counts(obj.values, sort=False)
 mask = obj.isin(['b', 'c'])
 obj[mask]
+data = DataFrame({'Qu1': [1, 3, 4, 3, 4],
+                  'Qu2': [2, 3, 1, 2, 3],
+                  'Qu3': [1, 5, 2, 4, 4]})
+data.apply(pd.value_counts).fillna(0) 
+
+"""
+Handling Missing Data
+"""
+string_data = Series(['aardvark', 'artichoke', np.nan, 'avocado'])     
+string_data.isnull()            
+string_data[0] = None
+string_data.isnull()
+
+"""
+Filtering Out Missing Data
+"""
+from numpy import nan as NA
+data = Series([1, NA, 3.5, NA, 7])
+
