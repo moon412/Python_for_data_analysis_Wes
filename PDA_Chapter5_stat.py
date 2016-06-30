@@ -23,7 +23,7 @@ df = DataFrame([[1.4, np.nan],
 df.sum() 
 df.sum(axis=1) #sum along axis=1, columns 
 df.mean(axis=1, skipna=False)
-df.idxman()
+df.idxmax()
 df.idxmin(axis=1)              
 df.cumsum()
 df.describe()
@@ -70,6 +70,7 @@ data.apply(pd.value_counts).fillna(0)
 
 """
 Handling Missing Data
+06/30/2016
 """
 string_data = Series(['aardvark', 'artichoke', np.nan, 'avocado'])     
 string_data.isnull()            
@@ -81,4 +82,60 @@ Filtering Out Missing Data
 """
 from numpy import nan as NA
 data = Series([1, NA, 3.5, NA, 7])
+data.dropna()
+data[data.notnull()]
+data = DataFrame([[1., 6.5, 3.], [1., NA, NA],
+                  [NA, NA, NA], [NA, 6.5, 3.]])
+cleaned = data.dropna()
+data.dropna(how='all')
+data.dropna(axis=1, how='all')
+data[4]= NA
+df = DataFrame(np.random.randn(7, 3))
+df.ix[:4, 1] = NA
+df.ix[:2, 2] = NA
+df.dropna(thresh=3)
 
+"""
+Filling in Missing Data
+"""
+df.fillna(0)
+df.fillna({1: 0.5, 3: -1})
+#Always returns a  reference to the filled object
+_ = df.fillna(0, inplace=True)
+df = DataFrame(np.random.randn(6, 3))
+df.ix[2:, 1] = NA
+df.ix[4:, 2] = NA
+df.fillna(method='ffill')
+df.fillna(method='ffill', limit=2)
+data = Series([1., NA, 3.5, NA, 7])
+data.fillna(data.mean())
+
+"""
+Hierarchical Indexing
+"""
+data = Series(np.random.randn(10),
+              index=[['a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'd', 'd'],
+                     [1, 2, 3, 1, 2, 3, 1, 2, 2, 3]])
+data.index                    
+data['b']
+data['b':'c']
+data.ix[['b', 'd']] 
+data.loc[['b', 'd']]
+data[:, 2]
+data.unstack()
+data.unstack().stack()
+frame = DataFrame(np.arange(12).reshape(4, 3),
+                  index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]],
+                  columns=[['Ohio', 'Ohio', 'Colorado'], ['Green', 'Red', 'Green']])
+frame.index.names = ['key1', 'key2'] 
+frame.columns.names = ['state', 'color'] 
+frame['Ohio']
+new_columns=pd.MultiIndex.from_arrays([['Ohio', 'Ohio', 'Colorado'], ['Green', 'Red', 'Green']],
+                       names=['state', 'color'])
+
+"""
+Reordering and Sorting Levels
+"""
+frame.swaplevel('key1', 'key2')
+frame.sortlevel(1) #What is the difference from DataFrame.sort_index
+frame.swaplevel(0, 1).sortlevel(1)                       
