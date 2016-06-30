@@ -5,6 +5,7 @@ Created on Tue Jun 28 07:06:43 2016
 @author: yue
 Chapter 5
 Getting Started with pandas
+First half: Data structure and basic operations
 """
 """
 Series
@@ -246,6 +247,7 @@ obj['a']
 obj['c']
 df = DataFrame(np.random.randn(4, 3), index=['a', 'a', 'b', 'b'])
 df.ix['a']
+
 
                  
 
