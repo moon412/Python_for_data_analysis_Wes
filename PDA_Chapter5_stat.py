@@ -138,4 +138,50 @@ Reordering and Sorting Levels
 """
 frame.swaplevel('key1', 'key2')
 frame.sortlevel(1) #What is the difference from DataFrame.sort_index
-frame.swaplevel(0, 1).sortlevel(1)                       
+frame.swaplevel(0, 1).sortlevel(1) 
+
+"""
+Summary Statistics by Level
+"""
+frame.sum(level='key2')
+frame.sum(level='color', axis=1)
+
+"""
+Using a DataFrame's columns
+"""
+frame = DataFrame({'a': range(7), 'b': range(7, 0, -1),
+                   'c': ['one', 'one', 'one', 'two', 'two', 'two', 'two'],
+                   'd': [0, 1, 2, 0, 1, 2, 3]})
+frame.set_index(['c', 'd'])
+frame.set_index(['c', 'd'], drop=False)
+frame.reset_index()
+
+"""
+Other pandas Topics
+Integer indexing
+"""
+ser = Series(np.arange(3.))
+ser[-1] #Erroe because cannot distinguish label or position
+ser2 = Series(np.arange(3.), index=['a', 'b', 'c'])
+ser2[-1] #no error, label is string, this should be position
+ser3 = Series(range(3), index=[-5, 1, 3])
+ser3.iget_value(2)
+ser3.iloc[2]
+frame = DataFrame(np.arange(6).reshape((3, 2)), index=[2, 0, 1])
+frame.irow(0)
+frame.iloc[0]
+
+"""
+Panel Data
+a dict of DataFrame objects or a 3-D ndarray
+"""
+import pandas.io.data as web
+pdata = pd.Panel({stk: web.get_data_yahoo(stk, '1/1/2009', '6/1/2012')
+                 for stk in ['AAPL', 'GOOG', 'MSFT', 'DELL']})
+pdata2 = pd.Panel(dict((stk, web.get_data_yahoo(stk, '1/1/2009', '6/1/2012'))
+                        for stk in ['AAPL', 'GOOG', 'MSFT', 'DELL']))
+pdata = pdata.swapaxes('items', 'minor')
+pdata.ix[:, '6/1/2012', :]
+pdata.ix['Adj Close', '5/22/2012':, :]
+stacked = pdata.ix[:, '5/30/2012':, :].to_frame()
+pdata.ix['Open':'High', :, :].to_frame()
