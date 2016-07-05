@@ -103,8 +103,8 @@ um = frame['UM']
 frame.corr()
 frame.cov()
 frame2.ix['f'] = np.random.randn(3)
-frame.corrwith(frame2) #corrwith a Series???
-frame.corrwith(um) # error to corrwith a Series
+frame.corrwith(frame2) 
+frame.corrwith(um) 
 frame.corrwith(um.to_frame())
 frame.ix[:, 'Washu':'UMST'].apply(lambda x: x.mean())
 frame.set_index('UM', drop=True, inplace=True)
@@ -127,6 +127,7 @@ for ticker in ['AAPL', 'IBM', 'MSFT', 'GOOG']:
     data[ticker] = web.get_data_yahoo(ticker, '1/1/2000', '1/1/2010')
 p = pd.Panel(data)
 p2 = p.swapaxes('items', 'major')
+
 
 """
 Extra
@@ -172,4 +173,12 @@ Not unique indices
 """
 obj = Series(list('cbdaabbcc'))
 obj.unique()
-obj.value_counts()
+s = obj.value_counts()
+pd.value_counts(obj.values, sort=False)
+mask = obj.isin(['b', 'e'])#membership for values
+obj[mask]
+data = DataFrame({'Qu1': [1, 3, 4, 3, 4],
+                  'Qu2': [2, 3, 1, 2, 3],
+                  'Qu3': [1, 5, 2, 4, 4]})
+data_counts = data.apply(pd.value_counts).fillna(0)
+df.reset_index()
