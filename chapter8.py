@@ -74,7 +74,8 @@ ax.legend(loc='best')
 Annotations and Drawing on a Subplot
 """
 import os
-os.chdir('D:\courses\Python_for_data_analysis')
+os.chdir('H:\Yue_backup\pydata-book')
+#os.chdir('D:\courses\Python_for_data_analysis')
 from datetime import datetime
 import pandas as pd
 data = pd.read_csv('ch08/spx.csv', index_col=0, parse_dates=True)
@@ -200,4 +201,7 @@ dummy_frame = pd.DataFrame(np.zeros((len(data), len(code_index))),
 for row, cat in zip(data.index, data.CATEGORY):
     codes = get_code(to_cat_list(cat))
     dummy_frame.ix[row, codes] = 1
+data = data.join(dummy_frame.add_prefix('category_'))
+
+from mpl_toolkits.basemap import Basemap
     
