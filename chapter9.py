@@ -83,7 +83,48 @@ hier_df.groupby(level='cty', axis=1).count()
 """
 Data Aggregation
 """
+grouped = df.groupby('key1')
+grouped['data1'].quantile(0.9)
+def peak_to_peak(arr):
+    return arr.max() - arr.min()
 
+grouped.agg(peak_to_peak)
+grouped.describe()
+
+import os
+os.chdir('/home/moon/pydata-book')
+tips = pd.read_csv('ch08/tips.csv')
+tips['tip_pct'] = tips['tip'] / tips['total_bill']
+grouped = tips.groupby(['sex', 'smoker'])
+grouped_pct = grouped['tip_pct']
+grouped_pct.agg('mean')
+grouped_pct.agg(['mean', 'std', peak_to_peak])
+grouped_pct.agg([('foo', 'mean'), ('bar', np.std)])
+functions = ['count', 'mean', 'max']
+result = grouped['tip_pct', 'total_bill'].agg(functions)
+ftuples = [('Durchschnitt', 'mean'), ('Abweichung', np.var)]
+grouped['tip_pct', 'total_bill'].agg(ftuples)
+grouped.agg({'tip': np.max, 'size': 'sum'})
+grouped.agg({'tip_pct': ['min', 'max', 'mean', 'std'],
+             'size': 'sum'})
+
+"""
+Returning Aggregated Data in "unindexed" Form
+"""
+tips.groupby(['sex', 'smoker'], as_index=False).mean()
+grouped_2 = tips.groupby(['sex', 'smoker'], as_index=False)
+grouped_2.mean()
+grouped_2.agg({'tip_pct': ['mean', 'min'],
+               'total_bill': 'sum'})
+grouped_2['tip_pct', 'total_bill'].agg([('foo', 'mean'),
+                                        ('bar', np.std)])
+grouped_2.agg([('foo', 'mean'), ('bar', np.std)])
+grouped_2.agg(['mean', 'std'])
+
+"""
+Group-wise Operations and Transformations
+"""
+k1_means = df.groupby('key1').mean()
                                      
 
 
