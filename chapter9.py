@@ -92,7 +92,8 @@ grouped.agg(peak_to_peak)
 grouped.describe()
 
 import os
-os.chdir('/home/moon/pydata-book')
+#os.chdir('/home/moon/pydata-book')
+os.chdir('H:\Yue_backup\pydata-book')
 tips = pd.read_csv('ch08/tips.csv')
 tips['tip_pct'] = tips['tip'] / tips['total_bill']
 grouped = tips.groupby(['sex', 'smoker'])
@@ -124,7 +125,9 @@ grouped_2.agg(['mean', 'std'])
 """
 Group-wise Operations and Transformations
 """
-k1_means = df.groupby('key1').mean()
+k1_means = df.groupby('key1').mean().add_prefix('mean_')
+pd.merge(df, k1_means, left_on='key1', right_index=True)
+
                                      
 
 
